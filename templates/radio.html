@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<title>
+			<% if(typeof(stream_url) != "undefined") { %>
+				<%= stream_name %> - Rasberry Pi Radio
+			<% } else { %>	
+				Rasberry Pi Radio - Rohit. Manohar
+			<% } %>	
+		</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<!-- Jquery -->
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+
+
+		<!-- Twitter Bootstrap -->
+		<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
+		<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+
+		<script type="text/javascript">
+			var host = '<%= server_host_name %>';
+			var port = '<%= server_port %>';
+
+			stopRadio = function(callback){
+				$.get('http://'+host+':'+port+'/stop', function(resp){
+					if(resp.status==200){
+						if(typeof(callback) != "undefined"){
+							callback();
+						}						
+					}
+				});
+				$('#now-playing').html('');
+			}
+
+			playUrl = function(url){
+				$.post('http://'+host+':'+port+'/read_stream',{"url":url}, function(resp){
+					if(resp.status!=200){ return; }
+
+					$('#now-playing').html('<strong> Now Playing : </strong>&nbsp;'+resp.data.streamInfo.name);
+				});
+			}
+
+			$(document).ready(function(){
+				$('#play').click(function(e){
+					e.preventDefault();
+
+					stopRadio(function(){
+						playUrl($('#url').val());
+					});
+				})
+
+				$('#stop').click(function(e){
+					e.preventDefault();
+					stopRadio();
+				});
+
+				<% if(typeof(stream_url) != "undefined") { %>
+					$('#url').val('<%= stream_url %>');
+				<% } %>	
+			});
+		</script>
+	</head>
+
+	<body>
+		<div class="container well" style="margin-top:20px;">
+			<div class="row">
+				<div class="span12">
+					<img src="http://www.raspberrypi.org/wp-content/uploads/2012/03/Raspi_Colour_R.png" style="height:50px;"/>&nbsp;				&nbsp;&nbsp;
+					<span style = "font-size:30px;Font-Family: 'Trebuchet MS', Helvetica, sans-serif">
+							Rasberry Pi Radio (2013) - Rohit. Manohar
+					</span>
+					<hr>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span12">
+					<input type="text" size="10" placeholder="Streaming URL" style="height:50px;width:500px;font-size:25px;" id="url"/>
+					&nbsp;&nbsp;&nbsp;
+					<button id="play" class="btn btn-primary btn-large" style="height:60px;margin-bottom:10px;">Play</button>
+					&nbsp;&nbsp;&nbsp;
+					<button id="stop" class="btn btn-danger btn-large" style="height:60px;margin-bottom:10px;">Stop</button>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="span12">
+					<span id="now-playing" style="font-size:25px;Font-Family: 'Trebuchet MS', Helvetica, sans-serif">
+						<% if(typeof(stream_url) != "undefined") { %>
+							<strong> Now Playing : </strong>
+							<%= stream_name %>
+						<% } %>	
+					</span>		
+				</div>
+			</div>		
+		</div>	
+	</body>
+</html>
