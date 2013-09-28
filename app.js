@@ -27,7 +27,19 @@ app.configure(function() {
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
 	var hostname = os.hostname();
-	console.log(hostname);
+	var ifaces = os.networkInterfaces();
+	for(var dev in ifaces) {
+	  var alias=0;
+	  ifaces[dev].forEach(function(details){
+	    if(details.family=='IPv4') {
+	      console.log(dev+(alias?':'+alias:''),details.address);
+	      ++alias;
+	    }
+	  });
+	}	
+	
+	return;
+
 	if(hostname.length > 0){
 		app.set('hostname', os.hostname());
 	} else {
