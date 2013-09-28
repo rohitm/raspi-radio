@@ -26,27 +26,16 @@ app.configure(function() {
 	app.use(express.static(path.join(application_root, "public")));
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
-	var hostname = os.hostname();
+	// Start the server on the ip obtained by the local ethernet card for now
+	// TODO : Figure out what to do if the ip is obtained from a wifi device??
 	var ifaces = os.networkInterfaces();
-	for(var dev in ifaces) {
-	  var alias=0;
-	  ifaces[dev].forEach(function(details){
-	    if(details.family=='IPv4') {
-	      console.log(dev+(alias?':'+alias:''),details.address);
-	      ++alias;
-	    }
-	  });
-	}	
-	
-	return;
-
-	if(hostname.length > 0){
-		app.set('hostname', os.hostname());
-	} else {
-		app.set('hostname', 'localhost');
+	if(typeof(ifaces["eth0"][1]["address"]) == "undefined"){
+		return;
 	}
 
-	app.set('hostname', '192.168.1.11');
+	ip = ifaces["eth0"][1]["address"];
+
+	app.set('hostname', ip);
 
 	app.set('server_port', 8080);
 
