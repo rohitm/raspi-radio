@@ -27,13 +27,14 @@ app.configure(function() {
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
 	var hostname = os.hostname();
+	console.log(hostname);
 	if(hostname.length > 0){
 		app.set('hostname', os.hostname());
 	} else {
 		app.set('hostname', 'localhost');
 	}
 
-	app.set('hostname', 'localhost');
+	app.set('hostname', '192.168.1.11');
 
 	app.set('server_port', 8080);
 
