@@ -33,7 +33,7 @@ app.configure(function() {
 		return;
 	}
 
-	ip = ifaces["eth0"][1]["address"];
+	ip = ifaces["eth0"][0]["address"];
 
 	app.set('hostname', ip);
 
