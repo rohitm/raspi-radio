@@ -91,8 +91,12 @@ app.get('/stop',function(req, res){
 	if(!isset(stream) || !isset(speaker) || !isset(decoder)) { end({"status":200},res); return; }
 
 	stream.end();
-	speaker.end();
-	speaker.close();
+	/*speaker.end();
+	speaker.close();*/
+
+	speaker.on('open', function(){console.log('open')});
+	speaker.on('close', function(){console.log('close')});
+	speaker.on('flush', function(){console.log('flush')});
 
 	/*stream = undefined;
 	decoder = undefined;
