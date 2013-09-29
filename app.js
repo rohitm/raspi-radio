@@ -93,8 +93,6 @@ app.get('/stop',function(req, res){
 	stream.destroy();
 
 	speaker.on('close', function(){
-		decoder.destroy();
-		
 		stream = undefined;
 		decoder = undefined;
 		speaker = undefined;
