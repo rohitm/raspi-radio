@@ -94,9 +94,9 @@ app.get('/stop',function(req, res){
 	speaker.end();
 	speaker.close();
 
-	stream = undefined;
+	/*stream = undefined;
 	decoder = undefined;
-	speaker = undefined;
+	speaker = undefined;*/
 	currentStream = {};
 
 	end({"status":200},res);
