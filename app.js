@@ -172,4 +172,8 @@ isset = function(obj){
 	else { return true; }
 }
 
+process.on('uncaughtException', function(err) {
+	console.log('Caught exception: ' + err.stack);
+});
+
 app.listen(app.get('server_port'));
