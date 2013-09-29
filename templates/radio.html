@@ -14,8 +14,9 @@
 
 
 		<!-- Twitter Bootstrap -->
-		<link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
-		<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
 		<script type="text/javascript">
 			var host = '<%= server_host_name %>';
@@ -51,7 +52,11 @@
 
 				$('#stop').click(function(e){
 					e.preventDefault();
-					stopRadio();
+					$this = $(this);
+					$this.attr('disabled','disabled');
+					stopRadio(function(){
+						$this.removeAttr('disabled');
+					});
 				});
 
 				<% if(typeof(stream_url) != "undefined") { %>
@@ -64,21 +69,22 @@
 	<body>
 		<div class="container well" style="margin-top:20px;">
 			<div class="row">
-				<div class="span12">
+				<div class="col-md-12">
 					<img src="http://www.raspberrypi.org/wp-content/uploads/2012/03/Raspi_Colour_R.png" style="height:50px;"/>&nbsp;				&nbsp;&nbsp;
-					<span style = "font-size:30px;Font-Family: 'Trebuchet MS', Helvetica, sans-serif">
-							Rasberry Pi Radio (2013) - Rohit. Manohar
+					<span style = "font-size:30px;" class="lead">
+						Iceberry Player - Rohit. Manohar
 					</span>
 					<hr>
 				</div>
 			</div>
 			<div class="row">
-				<div class="span12">
-					<input type="text" size="10" placeholder="Streaming URL" style="height:50px;width:500px;font-size:25px;" id="url"/>
-					&nbsp;&nbsp;&nbsp;
-					<button id="play" class="btn btn-primary btn-large" style="height:60px;margin-bottom:10px;">Play</button>
-					&nbsp;&nbsp;&nbsp;
-					<button id="stop" class="btn btn-danger btn-large" style="height:60px;margin-bottom:10px;">Stop</button>
+				<div class="col-md-8">
+					<input type="text" size="10" placeholder="Icecast URL" style="height:50px;font-size:25px;" class="col-md-8" id="url"/>
+				</div>
+				<div class="col-md-4">
+					<button id="play" class="btn btn-primary btn-lg" style="height:60px;margin-bottom:10px;"><span class="glyphicon glyphicon-play"></span>&nbsp;Play</button>
+
+					<button id="stop" class="btn btn-danger btn-lg" style="height:60px;margin-bottom:10px;"><span class="glyphicon glyphicon-stop"></span>&nbsp;Stop</button>
 				</div>
 			</div>
 			
