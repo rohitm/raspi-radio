@@ -145,7 +145,7 @@ readStream = function(url, callback_data, callback_end){
 		});
 	});
 
-	stream.on('error', function(){
+	stream.on('end', function(){
 		console.log('I guess the socket hungup..handle it');
 		stream.destroy();
 
