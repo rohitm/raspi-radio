@@ -15,7 +15,6 @@
 
 		<!-- Twitter Bootstrap -->
 		<link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
-
 		<script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 
 		<script type="text/javascript">
@@ -54,8 +53,12 @@
 					e.preventDefault();
 					$this = $(this);
 					$this.attr('disabled','disabled');
+					$('#play').attr('disabled','disabled');
+					$('#stop_button_title').html('Hang on..');
 					stopRadio(function(){
 						$this.removeAttr('disabled');
+						$('#play').removeAttr('disabled');
+						$('#stop_button_title').html('Stop');
 					});
 				});
 
@@ -70,7 +73,7 @@
 		<div class="container well" style="margin-top:20px;">
 			<div class="row">
 				<div class="col-md-12">
-					<img src="http://www.raspberrypi.org/wp-content/uploads/2012/03/Raspi_Colour_R.png" style="height:50px;"/>&nbsp;				&nbsp;&nbsp;
+					<img src="http://www.raspberrypi.org/wp-content/uploads/2012/03/Raspi_Colour_R.png" style="height:50px;"/>&nbsp;&nbsp;&nbsp;
 					<span style = "font-size:30px;" class="lead">
 						Iceberry Player - Rohit. Manohar
 					</span>
@@ -82,14 +85,13 @@
 					<input type="text" size="10" placeholder="Icecast URL" style="height:50px;font-size:25px;" class="col-md-8" id="url"/>
 				</div>
 				<div class="col-md-4">
-					<button id="play" class="btn btn-primary btn-lg" style="height:60px;margin-bottom:10px;"><span class="glyphicon glyphicon-play"></span>&nbsp;Play</button>
-
-					<button id="stop" class="btn btn-danger btn-lg" style="height:60px;margin-bottom:10px;"><span class="glyphicon glyphicon-stop"></span>&nbsp;Stop</button>
+					<button id="play" class="btn btn-primary btn-lg" style="height:60px;margin-bottom:10px;"><span class="glyphicon glyphicon-play"></span>&nbsp;<span id="play_button_title">Play</span></button>
+					<button id="stop" class="btn btn-danger btn-lg" style="height:60px;margin-bottom:10px;"><span class="glyphicon glyphicon-stop"></span>&nbsp;<span id="stop_button_title">Stop</span></button>
 				</div>
 			</div>
 			
 			<div class="row">
-				<div class="span12">
+				<div class="col-md-12">
 					<span id="now-playing" style="font-size:25px;Font-Family: 'Trebuchet MS', Helvetica, sans-serif">
 						<% if(typeof(stream_url) != "undefined") { %>
 							<strong> Now Playing : </strong>
