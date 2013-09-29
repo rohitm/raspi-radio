@@ -1,13 +1,13 @@
-<h2>Start the sound driver on the raspberry pi :</h2>
+<b>Start the sound driver on the raspberry pi :</b>
 sudo modprobe snd_bcm2835<br><br>
 
-<h2>make sure that snd_bcm2835 is running by :</h2>
+<b>make sure that snd_bcm2835 is running by :</b>
 lsmod<br><br>
 
-<h2>Run the player by :</h2>
+<b>Run the player by :</b>
 node app.js<br><br>
 
-<h2>Test Radio stations :</h2>
+<b>Test Radio stations :</b>
 ABC Lounge Radio : http://listen.radionomy.com/abc-lounge<br>
 ABC Dance Radio : http://listen.radionomy.com/abc-dance<br>
 BBC News : http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk<br>
