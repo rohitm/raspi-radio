@@ -33,7 +33,9 @@
 			}
 
 			playUrl = function(url){
+				$('#play').attr('disabled','disabled');
 				$.post('http://'+host+':'+port+'/read_stream',{"url":url}, function(resp){
+					$('#play').removeAttr('disabled');
 					if(resp.status!=200){ return; }
 
 					$('#now-playing').html('<strong> Now Playing : </strong>&nbsp;'+resp.data.streamInfo.name);
