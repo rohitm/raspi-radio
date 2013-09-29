@@ -92,6 +92,7 @@ app.get('/stop',function(req, res){
 
 	stream.end();
 	stream.close();
+	console.log(stream);
 	/*speaker.end();
 	speaker.close();*/
 
