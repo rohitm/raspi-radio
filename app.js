@@ -93,13 +93,14 @@ app.get('/stop',function(req, res){
 	stream.destroy();
 
 	speaker.on('close', function(){
+		decoder.destroy();
+		
 		stream = undefined;
 		decoder = undefined;
 		speaker = undefined;
 		currentStream = {};
+		end({"status":200},res);
 	});
-
-	end({"status":200},res);
 });
 
 end = function(msg, res){
