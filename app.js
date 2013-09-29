@@ -90,7 +90,7 @@ app.post('/read_stream', function(req, res){
 app.get('/stop',function(req, res){
 	if(!isset(stream) || !isset(speaker) || !isset(decoder)) { end({"status":200},res); return; }
 
-	stream.destory();
+	stream.destroy();
 	//console.log(stream);
 	/*speaker.end();
 	speaker.close();*/
