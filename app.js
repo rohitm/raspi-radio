@@ -91,7 +91,10 @@ app.get('/stop',function(req, res){
 	if(!isset(stream) || !isset(speaker) || !isset(decoder)) { end({"status":200},res); return; }
 
 	stream.end();
+	speaker.end();
+	speaker.flush();
 	speaker.close();
+
 	stream = undefined;
 	decoder = undefined;
 	speaker = undefined;
