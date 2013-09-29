@@ -90,13 +90,7 @@ app.post('/read_stream', function(req, res){
 app.get('/stop',function(req, res){
 	if(!isset(stream) || !isset(speaker) || !isset(decoder)) { end({"status":200},res); return; }
 
-	stream.destroy();
-
-	speaker.on('close', function(){
-		stream = undefined;
-		decoder = undefined;
-		speaker = undefined;
-		currentStream = {};
+	endStream(function(){
 		end({"status":200},res);
 	});
 });
@@ -143,19 +137,34 @@ readStream = function(url, callback_data, callback_end){
 				callback_end();
 			}
 		});
+
+		resp.on('error', function(){
+			endStream();
+		});	
 	});
 
 	stream.on('end', function(){
-		console.log('I guess the socket hungup..handle it');
-		stream.destroy();
+		endStream();
+	});
 
-		speaker.on('close', function(){
-			stream = undefined;
-			decoder = undefined;
-			speaker = undefined;
-			currentStream = {};
-		});		
-	})
+	stream.on('error', function(){
+		endStream();
+	});	
+}
+
+endStream = function(callback){
+	if(!isset(stream) || !isset(speaker) || !isset(decoder)) { return; }
+	stream.destroy();
+
+	speaker.on('close', function(){
+		stream = undefined;
+		decoder = undefined;
+		speaker = undefined;
+		currentStream = {};
+		if(typeof(callback) != "undefined"){
+			callback();
+		}
+	});
 }
 
 isset = function(obj){
