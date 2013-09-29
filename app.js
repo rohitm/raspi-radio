@@ -91,18 +91,13 @@ app.get('/stop',function(req, res){
 	if(!isset(stream) || !isset(speaker) || !isset(decoder)) { end({"status":200},res); return; }
 
 	stream.destroy();
-	//console.log(stream);
-	/*speaker.end();
-	speaker.close();*/
 
-	speaker.on('open', function(){console.log('open')});
-	speaker.on('close', function(){console.log('close')});
-	speaker.on('flush', function(){console.log('flush')});
-
-	/*stream = undefined;
-	decoder = undefined;
-	speaker = undefined;*/
-	currentStream = {};
+	speaker.on('close', function(){
+		stream = undefined;
+		decoder = undefined;
+		speaker = undefined;
+		currentStream = {};
+	});
 
 	end({"status":200},res);
 });
