@@ -92,7 +92,6 @@ app.get('/stop',function(req, res){
 
 	stream.end();
 	speaker.end();
-	speaker.flush();
 	speaker.close();
 
 	stream = undefined;
