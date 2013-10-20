@@ -2,7 +2,7 @@
 
 # Start snd_bcm2835 module
 echo "Starting snd_bcm2835..."
-`sudo modprobe snd_bcm2835`
+sudo modprobe snd_bcm2835
 
 # Set the volume a little low
 echo "Lowering the volume..."
