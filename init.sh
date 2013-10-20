@@ -10,7 +10,7 @@ echo "Lowering the volume..."
 
 # Start the node process
 echo "Starting iceberry..."
-$(nohup node /home/pi/apps/raspi-radio/app.js)
+$(nohup node /home/pi/apps/raspi-radio/app.js &)
 
 exit
 
