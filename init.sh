@@ -12,5 +12,5 @@ amixer -c 0 set PCM 90%
 echo "Starting iceberry..."
 $(nohup node /home/pi/apps/raspi-radio/app.js &)
 
-exit
+exit 0
 
