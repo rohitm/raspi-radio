@@ -1,11 +1,11 @@
 <b>Note</b> : The app depends on the alsa sound driver for the raspberry pi<br>
-<b>Running the App :</b><br>
+<b>Running the App :</b>
 <ul>
 	<li> Assign execute permissions to the startup script : <i>$ sudo chmod -R 777 iceberry.sh</i> </li>
 	<li> Run the app : <i>$ ./iceberry.sh</i> </li>
 </ul>
 <br>
-<b>Run the app on startup :</b><br>
+<b>Run the app on startup :</b>
 <ul>
 	<li> Copy the startup script to the init.d folder. <i>$ sudo cp iceberry.sh /etc/init.d/</i> </li>
 	<li> Register the app with update-rc. <i>$ sudo udpate-rc.d iceberry.sh defaults</i> </li>
