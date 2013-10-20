@@ -9,8 +9,8 @@ echo "Lowering the volume..."
 amixer -c 0 set PCM 90%
 
 # Start the node process
-echo "Starting iceberry..."
-$(nohup node /home/pi/apps/raspi-radio/app.js &)
+echo "Starting Iceberry..."
+nohup node /home/pi/apps/raspi-radio/app.js &
 
 exit 0
 
