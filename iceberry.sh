@@ -1,4 +1,5 @@
 #!/bin/bash
+# /etc/init.d/iceberry
 
 # Start snd_bcm2835 module
 echo "Starting snd_bcm2835..."
