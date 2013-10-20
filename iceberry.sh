@@ -11,7 +11,7 @@ amixer -c 0 set PCM 90%
 
 # Start the node process
 echo "Starting Iceberry..."
-nohup node /home/pi/apps/raspi-radio/app.js &
+forever start /home/pi/apps/raspi-radio/app.js
 
 exit 0
 
