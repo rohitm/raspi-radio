@@ -1,3 +1,21 @@
+// Shit to do :
+// 1. Software Goals
+// TODO : Figure out how to stream this url : http://87.98.216.129:3588/
+// TODO : Figure out how itunes is able to stream all urls and the currently playing song names.
+// TODO : Figure out a way to control volume with the alsa sound interface.
+// TODO : Figure out way to play different codecs like AAC, OGG etc.
+// TODO : Figure out how to assign a host name to the device so that it can be accessed from a local network.
+// TODO : Design a local wifi connection Interface that automatically connects to the configured wifi network.
+// TODO : Design a local DB either in memory K/V or a simple SQLlite kind of db to store recently played stations. (pagination).
+// TODO : Run a pull off the internet for default radio stations.
+
+// 2. Hardware Goals
+// TODO : Figure how to do the basic "led" blink with the raspberry pi connected to a bread board.
+// TODO : Figure out i/o with some kind of a LCD matrix display system. (Display song names etc).
+// TODO : Figure out how to read physical button input from from the bread board.
+// TODO : Use button inputs for volume, next station and previous station.
+// TODO : Make the raspberry pi look retro and awesome. Metal container, buttons etc. <- We have a demo prototype at this point.
+
 // Includes
 var fs = require("fs"),
 	http = require("http"),
