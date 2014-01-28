@@ -16,6 +16,10 @@
 // TODO : Use button inputs for volume, next station and previous station.
 // TODO : Make the raspberry pi look retro and awesome. Metal container, buttons etc. <- We have a demo prototype at this point.
 
+
+// 3. Bugs
+// TODO : Node.js http.get needs to follow http redirects correctly.
+
 // Includes
 
 var fs = require("fs"),
@@ -146,9 +150,9 @@ get = function(options, callback){
 			return;
 		}
 
-		resp.on('data', function (chunk) {
-    		console.log('BODY: ' + chunk);
-  		});
+		// Failed to read the correct stream, 
+		req.end();
+		return;
 
 	});
 }
