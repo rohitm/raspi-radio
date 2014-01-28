@@ -127,6 +127,7 @@ get = function(options, callback){
 			resp.setEncoding(options.encoding);
 		}
 
+		console.log(options);
 		console.log(resp.headers);
 		if(!isset(resp.headers['content-type'])){
 			req.end();
