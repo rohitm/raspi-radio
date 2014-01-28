@@ -17,6 +17,7 @@
 // TODO : Make the raspberry pi look retro and awesome. Metal container, buttons etc. <- We have a demo prototype at this point.
 
 // Includes
+
 var fs = require("fs"),
 	http = require("http"),
 	querystring = require('querystring'),
@@ -143,6 +144,11 @@ get = function(options, callback){
 			req.end();
 			return;
 		}
+
+		resp.on('data', function (chunk) {
+    		console.log('BODY: ' + chunk);
+  		});
+
 	});
 }
 
