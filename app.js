@@ -31,7 +31,8 @@ var fs = require("fs"),
 	_ = require("underscore"),
 	lame = require("lame"),
 	Speaker = require("speaker"),
-	os = require('os');
+	os = require('os'),
+	helper = require('./custom_modules/helper.js');
 
 var app = express();
 
@@ -126,26 +127,24 @@ end = function(msg, res){
 }
 
 get = function(options, callback){
-	var req = http.get(options.url, function(resp){
+	/*var req = http.get(options.url, function(resp){*/
+	var req = helper.followRedirectAndGet(options.url, function(error, resp){
 		if(isset(options.encoding)){
 			resp.setEncoding(options.encoding);
 		}
 
-		console.log(options);
-		console.log(resp.headers);
+		if(error){
+			req.end();
+			return;
+		}
+
 		if(!isset(resp.headers['content-type'])){
 			req.end();
 		}
 
 		var contentType = resp.headers['content-type'];
-		if(contentType == "application/octet-stream"){
-			callback(resp.headers.location);
-			req.end();
-			return;
-		}
-
 		if(contentType == "audio/mpeg"){
-			callback(options.url);
+			callback(resp.url);
 			req.end();
 			return;
 		}
