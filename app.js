@@ -152,7 +152,6 @@ get = function(options, callback){
 		// Failed to read the correct stream, 
 		req.end();
 		return;
-
 	});
 }
 
