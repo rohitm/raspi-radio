@@ -86,7 +86,7 @@ followRedirectAndGet = function(address, callback){
 		return;
 	}
 
-	var url_obj = url.parse(address);
+	var url_obj = URL.parse(address);
 	if(typeof(url_obj.host) == "undefined" || typeof(url_obj.path) == undefined){
 		callback(true, undefined);
 		return;
