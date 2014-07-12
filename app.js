@@ -16,10 +16,6 @@
 // TODO : Use button inputs for volume, next station and previous station.
 // TODO : Make the raspberry pi look retro and awesome. Metal container, buttons etc. <- We have a demo prototype at this point.
 
-
-// 3. Bugs
-// TODO : Node.js http.get needs to follow http redirects correctly.
-
 // Includes
 
 var fs = require("fs"),
@@ -50,14 +46,21 @@ app.configure(function() {
 	app.use(express.static(path.join(application_root, "public")));
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
-	// Start the server on the ip obtained by the local ethernet card for now
-	// TODO : Figure out what to do if the ip is obtained from a wifi device??
+	// Start the server on the ip obtained by the local ethernet card or a wlan card.
 	var ifaces = os.networkInterfaces();
-	if(typeof(ifaces["eth0"][1]["address"]) == "undefined"){
-		return;
+
+	if(typeof(ifaces["eth0"]) != "undefined"){
+		ip = ifaces["eth0"][0]["address"];
 	}
 
-	ip = ifaces["eth0"][0]["address"];
+	if(typeof(ifaces["wlan0"] != "undefined")){
+		ip = ifaces["wlan0"][0]["address"];
+	}
+
+	if(typeof(ip) == "undefined"){
+		console.log("No Network Connection...");
+		return;
+	}	
 
 	app.set('hostname', ip);
 
