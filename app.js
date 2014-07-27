@@ -93,14 +93,35 @@ app.post('/read_stream', function(req, res){
 	play(req.body.url, res);
 });
 
-app.get('/play_last', function(req, res){
+app.get('/play_stop_last', function(req, res){
+	if(typeof(currentStream.url) != "undefined"){
+		// The radio is playing currently, stop it
+		endStream(function(){
+			res.end('Radio Stopped!');
+			return;
+		});
+	}
+
 	fs.readFile('db.json', 'utf8', function(err, data) {
 		if(err) {
 			res.end('I dont know what to play?');
 			return;
 		}
 	  	
-		res.end(data);
+	  	file_obj = JSON.parse(data);
+
+	  	if(typeof(file_obj.last_played_url) == "undefined"){
+			res.end('I dont know what to play?');
+			return;	  		
+	  	}
+
+		play(file_obj.last_played_url, undefined, function(stream){
+			if(typeof(stream.name) == "undefined"){
+				res.end('Now playing : '+stream.name);
+			} else{
+				res.end('Playing the last played station');
+			}
+		});
 	});	
 })
 
