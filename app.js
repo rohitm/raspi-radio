@@ -117,7 +117,8 @@ app.get('/play_stop_last', function(req, res){
 	  	}
 
 		play(file_obj.last_played_url, undefined, function(stream){
-			console.log(stream);
+			console.log(stream.name);
+			console.log(typeof(stream.name));
 			if(typeof(stream.name) == "undefined"){
 				res.end('Now playing : '+stream.name);
 			} else{
