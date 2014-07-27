@@ -100,6 +100,11 @@ app.post('/read_stream', function(req, res){
 				currentStream.url = stream_url;
 			}
 
+			// Save this url to a file for persistance.
+			var file_obj = {};
+			file_obj.last_played_url = stream_url;
+			fs.writeFile("db.json", JSON.stringify(file_obj)); 
+
 			end({"status":200, "data":{"streamInfo":currentStream}},res);
 
 			decoder = new lame.Decoder();
