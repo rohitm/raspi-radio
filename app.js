@@ -94,6 +94,7 @@ app.post('/read_stream', function(req, res){
 });
 
 app.get('/play_stop_last', function(req, res){
+	console.log(currentStream);
 	if(typeof(currentStream.url) != "undefined"){
 		// The radio is playing currently, stop it
 		endStream(function(){
@@ -116,6 +117,7 @@ app.get('/play_stop_last', function(req, res){
 	  	}
 
 		play(file_obj.last_played_url, undefined, function(stream){
+			console.log(stream);
 			if(typeof(stream.name) == "undefined"){
 				res.end('Now playing : '+stream.name);
 			} else{
