@@ -90,7 +90,30 @@ app.post('/read_stream', function(req, res){
 
 	if(!isset(req.body.url)) { end({"status":404},res); return false; }
 
-	get({"url":req.body.url}, function(stream_url){
+	play(req.body.url, res);
+});
+
+app.get('/play_last', function(req, res){
+	fs.readFile('db.json', 'utf8', function(err, data) {
+		if(err) {
+			res.end('I dont know what to play?');
+			return;
+		}
+	  	
+		res.end(data);
+	});	
+})
+
+app.get('/stop',function(req, res){
+	if(!isset(stream) || !isset(speaker) || !isset(decoder)) { end({"status":200},res); return; }
+
+	endStream(function(){
+		end({"status":200},res);
+	});
+});
+
+play = function(url, res, callback) {
+	get({"url":url}, function(stream_url){
 		// This streaming engine only parses octect streams
 		readStream(stream_url, function(resp){
 			currentStream.url = stream_url;
@@ -105,7 +128,13 @@ app.post('/read_stream', function(req, res){
 			file_obj.last_played_url = stream_url;
 			fs.writeFile("db.json", JSON.stringify(file_obj)); 
 
-			end({"status":200, "data":{"streamInfo":currentStream}},res);
+			if(typeof(res) != "undefined"){
+				end({"status":200, "data":{"streamInfo":currentStream}},res);
+			}
+
+			if(typeof(callback) != "undefined"){
+				callback(currentStream);
+			}
 
 			decoder = new lame.Decoder();
 			resp.pipe(decoder);
@@ -116,16 +145,8 @@ app.post('/read_stream', function(req, res){
 				this.pipe(speaker);
 			});			
 		});
-	});
-});
-
-app.get('/stop',function(req, res){
-	if(!isset(stream) || !isset(speaker) || !isset(decoder)) { end({"status":200},res); return; }
-
-	endStream(function(){
-		end({"status":200},res);
-	});
-});
+	});	
+}
 
 end = function(msg, res){
 	if(isset(res)){
