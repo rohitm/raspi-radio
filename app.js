@@ -102,7 +102,7 @@ app.get('/play_stop_last', function(req, res){
 		return;
 	}
 
-	fs.readFile('db.json', 'utf8', function(err, data) {
+	fs.readFile(__dirname + '/db.json', 'utf8', function(err, data) {
 		if(err) {
 			res.end('I dont know what to play?');
 			return;
@@ -123,7 +123,7 @@ app.get('/play_stop_last', function(req, res){
 			}
 		});
 	});	
-})
+});
 
 app.get('/stop',function(req, res){
 	if(!isset(stream) || !isset(speaker) || !isset(decoder)) { end({"status":200},res); return; }
