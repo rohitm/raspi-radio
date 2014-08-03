@@ -28,7 +28,7 @@ var fs = require("fs"),
 	lame = require("lame"),
 	Speaker = require("speaker"),
 	os = require('os'),
-	cors = require('cors'),
+	cors = require('express-cors'),
 	helper = require('./custom_modules/helper.js');
 
 var app = express();
@@ -47,15 +47,11 @@ app.configure(function() {
 	app.use(express.static(path.join(application_root, "public")));
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
-	var whitelist = ['http://raspbmc', 'http://raspbian', 'http://192.168.1.5'];
-	var corsOptions = {
-	  origin: function(origin, callback){
-	    var originIsWhitelisted = whitelist.indexOf(origin) !== -1;
-	    callback(null, originIsWhitelisted);
-	  }
-	};
-
-	app.use(cors(corsOptions));
+	app.use(cors({
+	    allowedOrigins: [
+	        'raspbmc', 'raspbian', '192.168.1.5'
+	    ]
+	}));
 
 	// Start the server on the ip obtained by the local ethernet card or a wlan card.
 	var ifaces = os.networkInterfaces();
