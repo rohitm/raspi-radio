@@ -28,6 +28,7 @@ var fs = require("fs"),
 	lame = require("lame"),
 	Speaker = require("speaker"),
 	os = require('os'),
+	cors = require('cors'),
 	helper = require('./custom_modules/helper.js');
 
 var app = express();
@@ -45,6 +46,7 @@ app.configure(function() {
 	app.use(app.router);
 	app.use(express.static(path.join(application_root, "public")));
 	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+	app.use(cors());
 
 	// Start the server on the ip obtained by the local ethernet card or a wlan card.
 	var ifaces = os.networkInterfaces();
@@ -63,9 +65,7 @@ app.configure(function() {
 	}	
 
 	app.set('hostname', ip);
-
 	app.set('server_port', 8080);
-
 	app.engine('.html', require('ejs').__express);
 	app.set('views', __dirname + '/templates');
 	app.set('view engine', 'html');	
