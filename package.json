@@ -1,0 +1,19 @@
+{
+  "name": "Iceberry-player",
+  "description": "An icecast radio player on node.js with a Web ui",
+  "author": "Rohit Manohar <rohit.manohar@gmail.com>",
+  "dependencies": {
+    "baudio": "*",
+    "cors" : "*",
+    "ejs" : "*",
+    "express" : "*",
+    "express-cors" : "*",
+    "forever" : "*",
+    "lame" : "*",
+    "q" : "*",
+    "radio-stream" : "*",
+    "speaker" : "*",
+    "underscore" : "*",
+    "unirest" : "*"
+  }
+}
