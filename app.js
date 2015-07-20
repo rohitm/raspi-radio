@@ -29,7 +29,8 @@ var fs = require("fs"),
 	Speaker = require("speaker"),
 	os = require('os'),
 	cors = require('express-cors'),
-	helper = require('./custom_modules/helper.js');
+	helper = require('./custom_modules/helper.js'),
+	bodyParser = require('body-parser');
 
 var app = express();
 
@@ -40,12 +41,11 @@ var currentStream={};
 
 
 // Config
-app.configure(function() {
-	app.use(express.bodyParser());
-	app.use(express.methodOverride());
+var env = process.env.NODE_ENV || 'development';
+if ('development' == env) {
+   	app.use(bodyParser);
 	app.use(app.router);
 	app.use(express.static(path.join(application_root, "public")));
-	app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 
 	app.use(cors({
 	    allowedOrigins: [
@@ -56,16 +56,17 @@ app.configure(function() {
 	// Start the server on the ip obtained by the local ethernet card or a wlan card.
 	var ifaces = os.networkInterfaces();
 
-	if(typeof(ifaces["eth0"]) != "undefined"){
+	if(deep_exists(ifaces, 'eth0', 0, 'address')){
 		ip = ifaces["eth0"][0]["address"];
 	}
 
-	if(typeof(ifaces["wlan0"] != "undefined")){
+	if(deep_exists(ifaces, 'wlan0', 0, 'address')){
 		ip = ifaces["wlan0"][0]["address"];
 	}
 
 	if(typeof(ip) == "undefined"){
 		console.log("No Network Connection...");
+		console.log(ifaces);
 		return;
 	}	
 
@@ -74,7 +75,7 @@ app.configure(function() {
 	app.engine('.html', require('ejs').__express);
 	app.set('views', __dirname + '/templates');
 	app.set('view engine', 'html');	
-});
+}
 
 app.get('/',function(req,res){
 	var data = {};
@@ -252,6 +253,18 @@ endStream = function(callback){
 isset = function(obj){
 	if(typeof(obj)=="undefined") { return false; }
 	else { return true; }
+}
+
+function deep_exists(obj) {
+  var args = Array.prototype.slice.call(arguments, 1);
+
+  for (var i = 0; i < args.length; i++) {
+    if (!obj || !obj.hasOwnProperty(args[i])) {
+      return false;
+    }
+    obj = obj[args[i]];
+  }
+  return true;
 }
 
 process.on('uncaughtException', function(err) {
