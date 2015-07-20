@@ -58,10 +58,10 @@ if ('development' == env) {
 
 	if(deep_exists(ifaces, 'eth0', 0, 'address')){
 		ip = ifaces["eth0"][0]["address"];
-	}
-
-	if(deep_exists(ifaces, 'wlan0', 0, 'address')){
+	} else if(deep_exists(ifaces, 'wlan0', 0, 'address')){
 		ip = ifaces["wlan0"][0]["address"];
+	} else if(deep_exists(ifaces, 'lo0', 1, 'address')){
+		ip = ifaces["lo0"][1]["address"];
 	}
 
 	if(typeof(ip) == "undefined"){
