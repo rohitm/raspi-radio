@@ -43,7 +43,7 @@ var currentStream={};
 // Config
 var env = process.env.NODE_ENV || 'development';
 if ('development' == env) {
-   	app.use(bodyParser);
+   	//app.use(bodyParser);
 	app.use(app.router);
 	app.use(express.static(path.join(application_root, "public")));
 
