@@ -19,7 +19,7 @@
 <b>Run the app on startup :</b>
 <ul>
 	<li> Copy the startup script to the init.d folder. <i>$ sudo cp iceberry.sh /etc/init.d/</i> </li>
-	<li> Register the app with update-rc. <i>$ sudo udpate-rc.d iceberry.sh defaults</i> </li>
+	<li> Register the app with update-rc. <i>$ sudo /usr/sbin/update-rc.d iceberry.sh defaults</i> </li>
 	<li> Reboot Pi and Test. <i>$ sudo reboot</i> </li>
 </ul>	
 <br>
