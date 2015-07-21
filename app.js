@@ -1,6 +1,6 @@
 // Shit to do :
 // 1. Software Goals
-// TODO : Figure out how to stream this url : http://87.98.216.129:3588/
+// TODO : Figure out how to stream this url : http://81.173.25.115:80/
 // TODO : Figure out how itunes is able to stream all urls and the currently playing song names.
 // TODO : Figure out a way to control volume with the alsa sound interface.
 // TODO : Figure out way to play different codecs like AAC, OGG etc.
@@ -240,7 +240,6 @@ endStream = function(callback){
 		stream.destroy();	
 	}
 	
-	console.log('Setting stream undefined');
 	stream = undefined;	
 	decoder = undefined;
 	currentStream = {};

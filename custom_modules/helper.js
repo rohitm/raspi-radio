@@ -94,14 +94,15 @@ followRedirectAndGet = function(address, callback){
 
 	var options = {
 	    headers: {
-	        'User-Agent': 'iceberry/v1.0',
+	        'User-Agent': 'Iceberry/1.0'
 	    }
 	};
 
-	options.host = url_obj.host;
+	options.host = url_obj.hostname;
+	options.port = url_obj.port;
 	options.path = url_obj.path;
 
-	var req = http.get(options, function(resp){
+	var req = http.get(address, function(resp){
 		if(typeof(resp.headers.location) == "undefined"){
 			resp.url = address;
 			callback(false, resp);
@@ -110,7 +111,18 @@ followRedirectAndGet = function(address, callback){
 
 		followRedirectAndGet(resp.headers.location, callback);
 	}).on('error', function(e){
-		callback(true, undefined);	
+		if(typeof(e.code) !== "undefined" && e.code === "HPE_INVALID_CONSTANT"){
+			console.log('Server did not response with the right headers, try to parse it anyway?');
+			
+			resp = {};
+			resp.headers = [];
+			resp.headers['content-type'] = 'audio/mpeg';
+			resp.url = address;
+
+			// return(callback(false, resp));
+		}
+
+		callback(true, null);	
 	});
 
 	return(req);
