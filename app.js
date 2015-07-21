@@ -43,8 +43,8 @@ var currentStream={};
 // Config
 var env = process.env.NODE_ENV || 'development';
 if ('development' == env) {
-   	//app.use(bodyParser);
-	app.use(app.router);
+	app.use(bodyParser.json()); // for parsing application/json
+	app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded	
 	app.use(express.static(path.join(application_root, "public")));
 
 	app.use(cors({
@@ -60,8 +60,8 @@ if ('development' == env) {
 		ip = ifaces["eth0"][0]["address"];
 	} else if(deep_exists(ifaces, 'wlan0', 0, 'address')){
 		ip = ifaces["wlan0"][0]["address"];
-	} else if(deep_exists(ifaces, 'lo0', 1, 'address')){
-		ip = ifaces["lo0"][1]["address"];
+	} else {
+		ip = '/';
 	}
 
 	if(typeof(ip) == "undefined"){
@@ -70,17 +70,18 @@ if ('development' == env) {
 		return;
 	}	
 
-	app.set('hostname', ip);
-	app.set('server_port', 8080);
-	app.engine('.html', require('ejs').__express);
+	app.locals.hostname = ip;
+	app.locals.server_port = 8080;
+	
 	app.set('views', __dirname + '/templates');
-	app.set('view engine', 'html');	
+	app.set('view engine', 'ejs');
+	app.engine('ejs', require('ejs').renderFile);
 }
 
-app.get('/',function(req,res){
+app.get('/', function(req,res){
 	var data = {};
-	data.server_host_name = app.get('hostname');
-	data.server_port = app.get('server_port');
+	data.server_host_name = app.locals.hostname;
+	data.server_port = app.locals.server_port;
 
 	if(isset(currentStream.url)){
 		data.stream_url = currentStream.url;
@@ -132,7 +133,7 @@ app.get('/play_stop_last', function(req, res){
 });
 
 app.get('/stop',function(req, res){
-	if(!isset(stream) || !isset(speaker) || !isset(decoder)) { end({"status":200},res); return; }
+	if(!isset(stream) && !isset(speaker) && !isset(decoder)) { end({"status":200},res); return; }
 
 	endStream(function(){
 		end({"status":200},res);
@@ -140,7 +141,11 @@ app.get('/stop',function(req, res){
 });
 
 play = function(url, res, callback) {
-	get({"url":url}, function(stream_url){
+	get({"url":url}, function(err, stream_url){
+		if(err){
+			return(end({"status":404},res));
+		}
+		
 		// This streaming engine only parses octect streams
 		readStream(stream_url, function(resp){
 			currentStream.url = stream_url;
@@ -176,38 +181,31 @@ play = function(url, res, callback) {
 }
 
 end = function(msg, res){
-	if(isset(res)){
+	if(isset(res) && !res.headerSent){
 		res.writeHead(200, {"Content-Type": "application/json"});
 		res.end(JSON.stringify(msg));	
 	}
 }
 
 get = function(options, callback){
-	/*var req = http.get(options.url, function(resp){*/
 	var req = helper.followRedirectAndGet(options.url, function(error, resp){
 		if(isset(options.encoding)){
 			resp.setEncoding(options.encoding);
 		}
 
-		if(error){
-			req.end();
-			return;
-		}
+		req.end();
 
-		if(!isset(resp.headers['content-type'])){
-			req.end();
+		if(error || !isset(resp.headers['content-type'])){
+			return(callback(true, null));
 		}
 
 		var contentType = resp.headers['content-type'];
 		if(contentType == "audio/mpeg"){
-			callback(resp.url);
-			req.end();
-			return;
+			return(callback(null, resp.url));
 		}
 
-		// Failed to read the correct stream, 
-		req.end();
-		return;
+		// Failed to read the correct stream
+		return(callback(true, null));
 	});
 }
 
@@ -236,18 +234,29 @@ readStream = function(url, callback_data, callback_end){
 }
 
 endStream = function(callback){
-	if(!isset(stream) || !isset(speaker) || !isset(decoder)) { return; }
-	stream.destroy();
+	if(!isset(stream) && !isset(speaker) && !isset(decoder)) { return; }
+	
+	if(isset(stream)){
+		stream.destroy();	
+	}
+	
+	console.log('Setting stream undefined');
+	stream = undefined;	
+	decoder = undefined;
+	currentStream = {};
 
-	speaker.on('close', function(){
-		stream = undefined;
-		decoder = undefined;
-		speaker = undefined;
-		currentStream = {};
+	if(isset(speaker)){
+		speaker.on('close', function(){
+			speaker = undefined;
+			if(typeof(callback) != "undefined"){
+				callback();
+			}
+		});		
+	} else {
 		if(typeof(callback) != "undefined"){
 			callback();
-		}
-	});
+		}		
+	}
 }
 
 isset = function(obj){
@@ -271,4 +280,4 @@ process.on('uncaughtException', function(err) {
 	console.log('Caught exception: ' + err.stack);
 });
 
-app.listen(app.get('server_port'));
+var server = app.listen(app.locals.server_port);	
