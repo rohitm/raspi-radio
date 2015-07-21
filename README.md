@@ -1,8 +1,19 @@
-<b>Note</b> : The app depends on the alsa sound driver for the raspberry pi<br>
+<b>Note</b> : Tested on Raspberry Pi 2 Model B<br>
+<b>Installation :</b>
+<ul>
+	<li>Prerequisites : <i>$ apt-get install node git libasound2-dev pi</i></li>
+	<li><i>$ cd ~/</i></li>
+	<li><i>$ mkdir apps</i></li>
+	<li><i>$ cd apps</i></li>
+	<li>Clone the App : <i>$ git clone https://github.com/rohitm/raspi-radio.git</i></li>
+	<li>Install dependencies : <i>$ npm update</i></li>
+</ul>
 <b>Running the App :</b>
 <ul>
+	<li> Go to the folder : <i>$ cd ~/apps/raspi-radio</i></li>
 	<li> Assign execute permissions to the startup script : <i>$ sudo chmod -R 777 iceberry.sh</i> </li>
 	<li> Run the app : <i>$ ./iceberry.sh</i> </li>
+	<li> On the Browser goto : http://<i>ip-address-of-pi</i>:8080/</li>
 </ul>
 <br>
 <b>Run the app on startup :</b>
