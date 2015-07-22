@@ -3,19 +3,19 @@
   "description": "An icecast radio player on node.js with a Web ui",
   "author": "Rohit Manohar <rohit.manohar@gmail.com>",
   "dependencies": {
-    "baudio": "*",
-    "cors" : "*",
-    "ejs" : "*",
-    "express" : "*",
-    "express-cors" : "*",
-    "forever" : "*",
-    "lame" : "*",
-    "q" : "*",
-    "radio-stream" : "*",
-    "speaker" : "*",
-    "underscore" : "*",
-    "unirest" : "*",
-    "body-parser" : "*",
-    "async" : "*"
+    "baudio": "latest",
+    "cors" : "latest",
+    "ejs" : "latest",
+    "express" : "latest",
+    "express-cors" : "latest",
+    "forever" : "latest",
+    "lame" : "latest",
+    "q" : "latest",
+    "radio-stream" : "latest",
+    "speaker" : "latest",
+    "underscore" : "latest",
+    "unirest" : "latest",
+    "body-parser" : "latest",
+    "async" : "latest"
   }
 }
