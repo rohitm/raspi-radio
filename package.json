@@ -16,7 +16,6 @@
     "underscore" : "*",
     "unirest" : "*",
     "body-parser" : "*",
-    "aysnc" : "*"
-
+    "async" : "*"
   }
 }
