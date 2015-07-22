@@ -1,0 +1,9 @@
+[
+	{"name" : "lounge", "url" : "http://listen.radionomy.com/ABC-LOUNGE"},
+	{"name" : "house", "url" : "http://listen.radionomy.com/DeepHouse"},
+	{"name" : "rock", "url" : "http://64.237.45.2:8000/905-MP3-High"},
+	{"name" : "jazz", "url" : "http://listen.radionomy.com/J-Last"},
+	{"name" : "pop", "url" : "http://listen.radionomy.com/-1Hits"},
+	{"name" : "reggae", "url" : "http://listen.radionomy.com/A1ONEBOBMARLEYANDCO"},
+	{"name" : "news", "url" : "http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk"}
+]

@@ -30,7 +30,8 @@ var fs = require("fs"),
 	os = require('os'),
 	cors = require('express-cors'),
 	helper = require('./custom_modules/helper.js'),
-	bodyParser = require('body-parser');
+	bodyParser = require('body-parser'),
+	async = require('async');
 
 var app = express();
 
@@ -100,40 +101,87 @@ app.post('/read_stream', function(req, res){
 	play(req.body.url, res);
 });
 
+app.get('/play/:genre', function(req, res){
+	req.params.genre = req.params.genre.toLowerCase(); 
+
+	async.waterfall([
+		function(callback){
+			if(typeof(currentStream.url) != "undefined"){
+				// The radio is playing currently, stop it
+				endStream(function(){
+					callback(null, true);
+				});
+			} else {
+				callback(null, false);
+			}
+		},
+		function(radioStatus, callback){
+			fs.readFile(__dirname + '/default_genres.json', 'utf8', function(err, data) {
+				if(err) {
+					return(callback({"status":500, "data":{"error":"Genre list not available"}}));
+				}		
+
+				var genres = JSON.parse(data);
+
+				// Find the genre
+				var genre = _.find(genres, {"name": req.params.genre});
+				if(genre === undefined){
+					return(callback({"status":500, "data":{"error":"Genre not found"}}));	
+				}
+
+				return(callback(null, genre.url));
+			});
+		},
+
+		function(url, callback){
+			// Play the url
+			play(url, undefined, function(stream){
+				if(typeof(stream.name) != "undefined"){
+					return(callback(null, {"status":200, "data":{"current_stream":stream.name}}));
+				} else{
+					return(callback(null, {"status":200}));
+				}
+			});
+
+		}
+	],
+	function(err, result){ 
+		return(end(err || result, res));	
+	});
+});
+
 app.get('/play_stop_last', function(req, res){
 	if(typeof(currentStream.url) != "undefined"){
 		// The radio is playing currently, stop it
 		endStream(function(){
-			res.end('Radio Stopped!');
+			end({"status":200},res);
 		});
 		return;
 	}
 
 	fs.readFile(__dirname + '/db.json', 'utf8', function(err, data) {
 		if(err) {
-			res.end('I dont know what to play?');
-			return;
+			return(end({"status":500, "data":{"error":"I dont know what to play?"}},res));
 		}
 	  	
 	  	file_obj = JSON.parse(data);
 
 	  	if(typeof(file_obj.last_played_url) == "undefined"){
-			res.end('I dont know what to play?');
-			return;	  		
+			return(end({"status":500, "data":{"error":"I dont know what to play?"}},res));
 	  	}
 
 		play(file_obj.last_played_url, undefined, function(stream){
 			if(typeof(stream.name) != "undefined"){
-				res.end('Now playing : '+stream.name);
+				end({"status":200, "data":{"current_stream":stream.name}},res);
 			} else{
-				res.end('Playing the last played station');
+				end({"status":200},res);
 			}
 		});
 	});	
 });
 
 app.get('/stop',function(req, res){
-	if(!isset(stream) && !isset(speaker) && !isset(decoder)) { end({"status":200},res); return; }
+	if(!isset(stream) && !isset(speaker) && !isset(decoder)) { return(end({"status":200},res)); }
 
 	endStream(function(){
 		end({"status":200},res);
